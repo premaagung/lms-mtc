@@ -25,7 +25,7 @@ import {
 interface TitleFormProps {
     initialData: {
         title: string;
-    }
+    };
     courseId: string;
 };
 
