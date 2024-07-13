@@ -1,13 +1,14 @@
-// prisma/schema.prisma
 datasource db {
-  provider  = "postgresql"
+  provider  = "mysql"
   url  	    = env("DATABASE_URL")
+  relationMode = "prisma"
   // uncomment next line if you use Prisma <5.10
   // directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 model Course {
@@ -26,11 +27,11 @@ model Course {
   categoryId String?
   category Category? @relation(fields: [categoryId], references: [id])
 
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-@@index([categoryId])
+  @@index([categoryId])
+  @@fulltext([title])
 }
 
 model Category {
@@ -114,7 +115,7 @@ model Purchase {
 }
 
 model StripeCustomer {
-  id String @default(uuid())
+  id String @id @default(uuid())  // Added @id attribute here
   userId String @unique
   stripeCustomerId String @unique
 
